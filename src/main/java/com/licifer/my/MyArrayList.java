@@ -7,9 +7,9 @@ import java.util.Iterator;
  * @Author: LiCifer
  * @Date: Created in 22:40 2023/8/25
  */
-public class MyArrayList<E> implements Iterable<E> {
-    private E[] data;
-    private int size;
+public class MyArrayList<E> extends AbstractMyList<E> {
+
+    protected E[] data;
     private static final int INIT_CAP = 1;
 
     public MyArrayList() {
@@ -21,6 +21,7 @@ public class MyArrayList<E> implements Iterable<E> {
         size = 0;
     }
 
+    @Override
     public  void addLast(E e) {
         int capacity = data.length;
         if (size == capacity) {
@@ -30,6 +31,7 @@ public class MyArrayList<E> implements Iterable<E> {
         size++;
     }
 
+    @Override
     public void add(int index, E e) {
         checkPosition(index);
         int capacity = data.length;
@@ -44,10 +46,12 @@ public class MyArrayList<E> implements Iterable<E> {
         size++;
     }
 
+    @Override
     public void addFirst(E e) {
         add(0, e);
     }
 
+    @Override
     public E remove(int index) {
         checkElement(index);
         // 1. 数组复制（不是移动），注意复制后的数组最后一个元素还存在值
@@ -63,6 +67,7 @@ public class MyArrayList<E> implements Iterable<E> {
         return data[index];
     }
 
+    @Override
     public E removeLast() {
         E lastData = data[size - 1];
         data[size - 1] = null;
@@ -73,50 +78,21 @@ public class MyArrayList<E> implements Iterable<E> {
         return lastData;
     }
 
+    @Override
     public E removeFirst() {
         return remove(0);
     }
 
+    @Override
     public E get(int index) {
         checkElement(index);
         return data[index];
     }
 
+    @Override
     public void set(int index, E e) {
         checkElement(index);
         data[index] = e;
-    }
-
-    // 创建一个新的数组，用于扩容和缩容
-    private void resize(int newCap) {
-        if (size > newCap) {
-            return;
-        }
-        E[] temp = (E[]) new Object[newCap];
-        System.arraycopy(data, 0, temp, 0, size);
-        data = temp;
-    }
-
-    // 检查index是否存在元素
-    private boolean isElement(int index) {
-        return index >= 0 && index < size;
-    }
-
-    // 检查index是否可以添加元素
-    private boolean isPosition(int index) {
-        return index >= 0 && index <= size;
-    }
-
-    private void checkPosition(int index) {
-        if (!isPosition(index)) {
-            throw new IndexOutOfBoundsException("数组越界");
-        }
-    }
-
-    private void checkElement(int index) {
-        if (!isElement(index)) {
-            throw new IndexOutOfBoundsException("数组越界");
-        }
     }
 
     @Override
@@ -141,6 +117,16 @@ public class MyArrayList<E> implements Iterable<E> {
                 return data[index++];
             }
         };
+    }
+
+    // 创建一个新的数组，用于扩容和缩容
+    private void resize(int newCap) {
+        if (size > newCap) {
+            return;
+        }
+        E[] temp = (E[]) new Object[newCap];
+        System.arraycopy(data, 0, temp, 0, size);
+        data = temp;
     }
 
     public static void main(String[] args) {
