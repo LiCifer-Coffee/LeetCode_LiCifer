@@ -1,3 +1,5 @@
+package com.licifer.other;
+
 public class StringCompare {
     public static boolean compareVersions(String apiVersionConfig, String apiVersionRequest, int compareDigits) {
         String[] configParts = apiVersionConfig.split("\\.");

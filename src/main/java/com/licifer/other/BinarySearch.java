@@ -1,3 +1,5 @@
+package com.licifer.other;
+
 /**
  * @Author: MrLee
  * @Description: //二分查找
