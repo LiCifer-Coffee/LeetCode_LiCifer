@@ -1,4 +1,4 @@
-package com.licifer.leetcode.editor.cn.my;
+package com.licifer.my;
 
 import java.util.Arrays;
 import java.util.Iterator;
