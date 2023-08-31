@@ -1,0 +1,65 @@
+> Problem: [23. 合并 K 个升序链表](https://leetcode.cn/problems/merge-k-sorted-lists/description/)
+
+[TOC]
+
+# 思路
+
+题目要求将K个升序排列的链表合并成一个新的升序链表。这是一个常见的问题，可以使用多种方法解决，其中一种比较直观的方法是使用类似合并排序的思想，即从K个链表中每次选择最小的节点，然后将其加入到新的有序链表中。
+
+# 解题方法
+
+采用合并排序的思想，从K个链表中每次选择最小的节点，将其接入到新的有序链表中。为了实现这个过程，我们可以使用一个额外的虚拟头节点 vHead 作为新链表的起始，同时使用一个 runNode 指针来指示当前已合并链表的末尾节点。我们还需要维护一个数组 runList 来存储每个链表的当前节点，初始时指向每个链表的头节点。主要目的是不改变原始数据，若直接使用以引用传进来的指针，那么可能会导致丢失数据。
+
+然后，我们不断从 runList 中选取值最小的节点加入到新链表中，同时更新 runNode 和对应链表的当前节点。重复这个过程，直到所有链表的节点都被合并进新链表中。
+
+# 复杂度分析
+
+时间复杂度：假设总共有N个节点，每个节点被选取和添加到新链表中都需要O(K)的时间（K为链表个数）。所以总体时间复杂度为O(NK)，其中N为节点总数，K为链表个数。
+空间复杂度：除了存储结果的新链表外，额外使用的空间主要是vHead、runNode、lists 和一些临时变量，所以空间复杂度为O(K)。
+
+# Code
+
+* []
+
+```C++
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* mergeKLists(vector<ListNode*>& lists) {
+        ListNode* Vhead = new ListNode;
+        ListNode* runNode = Vhead;
+        vector<ListNode*> runList = lists;
+        while(true){
+            ListNode* t = nullptr;
+            int index = -1;
+            //每次找到最小的数
+            for(int j = 0;j < lists.size();j++){
+                if(t == nullptr || (runList[j] != nullptr && t->val >runList[j]->val)){
+                    t = runList[j];
+                    index = j;
+                }
+            }
+            //找完了就退出
+            if(t == nullptr)
+                break;
+            runNode->next = t;
+            runNode = t;
+            runList[index] = runList[index]->next;
+        }
+        ListNode* res = Vhead->next;
+        delete Vhead;
+        return res;
+    }
+};
+```
+
