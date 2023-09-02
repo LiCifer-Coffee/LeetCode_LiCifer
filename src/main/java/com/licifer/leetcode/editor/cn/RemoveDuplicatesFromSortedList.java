@@ -67,7 +67,7 @@ public class RemoveDuplicatesFromSortedList {
                 return null;
             }
 
-            ListNode fast = head, slow = head, result = slow;
+            ListNode fast = head, slow = head;
             while (fast != null) {
                 if (fast.val != slow.val) {
                     slow = slow.next;
@@ -76,7 +76,7 @@ public class RemoveDuplicatesFromSortedList {
                 fast = fast.next;
             }
             slow.next = null;
-            return result;
+            return head;
         }
     }
 
