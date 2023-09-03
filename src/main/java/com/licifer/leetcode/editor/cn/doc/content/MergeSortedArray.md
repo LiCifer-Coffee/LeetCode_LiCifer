@@ -1,0 +1,264 @@
+<p>给你两个按 <strong>非递减顺序</strong> 排列的整数数组&nbsp;<code>nums1</code><em> </em>和 <code>nums2</code>，另有两个整数 <code>m</code> 和 <code>n</code> ，分别表示 <code>nums1</code> 和 <code>nums2</code> 中的元素数目。</p>
+
+<p>请你 <strong>合并</strong> <code>nums2</code><em> </em>到 <code>nums1</code> 中，使合并后的数组同样按 <strong>非递减顺序</strong> 排列。</p>
+
+<p><strong>注意：</strong>最终，合并后数组不应由函数返回，而是存储在数组 <code>nums1</code> 中。为了应对这种情况，<code>nums1</code> 的初始长度为 <code>m + n</code>，其中前 <code>m</code> 个元素表示应合并的元素，后 <code>n</code> 个元素为 <code>0</code> ，应忽略。<code>nums2</code> 的长度为 <code>n</code> 。</p>
+
+<p>&nbsp;</p>
+
+<p><strong>示例 1：</strong></p>
+
+<pre>
+<strong>输入：</strong>nums1 = [1,2,3,0,0,0], m = 3, nums2 = [2,5,6], n = 3
+<strong>输出：</strong>[1,2,2,3,5,6]
+<strong>解释：</strong>需要合并 [1,2,3] 和 [2,5,6] 。
+合并结果是 [<em><strong>1</strong></em>,<em><strong>2</strong></em>,2,<em><strong>3</strong></em>,5,6] ，其中斜体加粗标注的为 nums1 中的元素。
+</pre>
+
+<p><strong>示例 2：</strong></p>
+
+<pre>
+<strong>输入：</strong>nums1 = [1], m = 1, nums2 = [], n = 0
+<strong>输出：</strong>[1]
+<strong>解释：</strong>需要合并 [1] 和 [] 。
+合并结果是 [1] 。
+</pre>
+
+<p><strong>示例 3：</strong></p>
+
+<pre>
+<strong>输入：</strong>nums1 = [0], m = 0, nums2 = [1], n = 1
+<strong>输出：</strong>[1]
+<strong>解释：</strong>需要合并的数组是 [] 和 [1] 。
+合并结果是 [1] 。
+注意，因为 m = 0 ，所以 nums1 中没有元素。nums1 中仅存的 0 仅仅是为了确保合并结果可以顺利存放到 nums1 中。
+</pre>
+
+<p>&nbsp;</p>
+
+<p><strong>提示：</strong></p>
+
+<ul> 
+ <li><code>nums1.length == m + n</code></li> 
+ <li><code>nums2.length == n</code></li> 
+ <li><code>0 &lt;= m, n &lt;= 200</code></li> 
+ <li><code>1 &lt;= m + n &lt;= 200</code></li> 
+ <li><code>-10<sup>9</sup> &lt;= nums1[i], nums2[j] &lt;= 10<sup>9</sup></code></li> 
+</ul>
+
+<p>&nbsp;</p>
+
+<p><strong>进阶：</strong>你可以设计实现一个时间复杂度为 <code>O(m + n)</code> 的算法解决此问题吗？</p>
+
+<details><summary><strong>Related Topics</strong></summary>数组 | 双指针 | 排序</details><br>
+
+<div>👍 2098, 👎 0<span style='float: right;'><span style='color: gray;'><a href='https://github.com/labuladong/fucking-algorithm/discussions/939' target='_blank' style='color: lightgray;text-decoration: underline;'>bug 反馈</a> | <a href='https://labuladong.gitee.io/article/fname.html?fname=jb插件简介' target='_blank' style='color: lightgray;text-decoration: underline;'>使用指南</a> | <a href='https://labuladong.github.io/algo/images/others/%E5%85%A8%E5%AE%B6%E6%A1%B6.jpg' target='_blank' style='color: lightgray;text-decoration: underline;'>更多配套插件</a></span></span></div>
+
+<div id="labuladong"><hr>
+
+**通知：[数据结构精品课](https://aep.h5.xeknow.com/s/1XJHEO) 和 [递归算法专题课](https://aep.xet.tech/s/3YGcq3) 限时附赠网站会员，[新版刷题打卡挑战](https://labuladong.gitee.io/algo/challenge/) 上线！**
+
+<details><summary><strong>labuladong 思路</strong></summary>
+
+## 基本思路
+
+这道题很像前文 [链表的双指针技巧汇总](https://labuladong.github.io/article/fname.html?fname=链表技巧) 中讲过的 [21. 合并两个有序链表](/problems/merge-two-sorted-lists)，这里让你合并两个有序数组。
+
+对于单链表来说，我们直接用双指针从头开始合并即可，但对于数组来说会出问题。因为题目让我直接把结果存到 `nums1` 中，而 `nums1` 的开头有元素，如果我们无脑复制单链表的逻辑，会覆盖掉 `nums1` 的原始元素，导致错误。
+
+但 `nums1` 后面是空的呀，所以这道题需要我们稍微变通一下：**将双指针初始化在数组的尾部，然后从后向前进行合并**，这样即便覆盖了 `nums1` 中的元素，这些元素也必然早就被用过了，不会影响答案的正确性。
+
+**标签：[数据结构](https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzAxODQxMDM0Mw==&action=getalbum&album_id=1318892385270808576)，[数组双指针](https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzAxODQxMDM0Mw==&action=getalbum&album_id=2120601117519675393)**
+
+## 解法代码
+
+提示：🟢 标记的是我写的解法代码，🤖 标记的是 chatGPT 翻译的多语言解法代码。如有错误，可以 [点这里](https://github.com/labuladong/fucking-algorithm/issues/1113) 反馈和修正。
+
+<div class="tab-panel"><div class="tab-nav">
+<button data-tab-item="cpp" class="tab-nav-button btn " data-tab-group="default" onclick="switchTab(this)">cpp🤖</button>
+
+<button data-tab-item="python" class="tab-nav-button btn " data-tab-group="default" onclick="switchTab(this)">python🤖</button>
+
+<button data-tab-item="java" class="tab-nav-button btn active" data-tab-group="default" onclick="switchTab(this)">java🟢</button>
+
+<button data-tab-item="go" class="tab-nav-button btn " data-tab-group="default" onclick="switchTab(this)">go🤖</button>
+
+<button data-tab-item="javascript" class="tab-nav-button btn " data-tab-group="default" onclick="switchTab(this)">javascript🤖</button>
+</div><div class="tab-content">
+<div data-tab-item="cpp" class="tab-item " data-tab-group="default"><div class="highlight">
+
+```cpp
+// 注意：cpp 代码由 chatGPT🤖 根据我的 java 代码翻译，旨在帮助不同背景的读者理解算法逻辑。
+// 本代码已经通过力扣的测试用例，应该可直接成功提交。
+
+class Solution {
+public:
+    void merge(vector<int>& nums1, int m, vector<int>& nums2, int n) {
+        // 两个指针分别初始化在两个数组的最后一个元素（类似拉链两端的锯齿）
+        int i = m - 1, j = n - 1;
+        // 生成排序的结果（类似拉链的拉锁）
+        int p = nums1.size() - 1;
+        // 从后向前生成结果数组，类似合并两个有序链表的逻辑
+        while (i >= 0 && j >= 0) {
+            if (nums1[i] > nums2[j]) {
+                nums1[p] = nums1[i];
+                i--;
+            } else {
+                nums1[p] = nums2[j];
+                j--;
+            }
+            p--;
+        }
+        // 可能其中一个数组的指针走到尽头了，而另一个还没走完
+        // 因为我们本身就是在往 nums1 中放元素，所以只需考虑 nums2 是否剩元素即可
+        while (j >= 0) {
+            nums1[p] = nums2[j];
+            j--;
+            p--;
+        }
+    }
+};
+```
+
+</div></div>
+
+<div data-tab-item="python" class="tab-item " data-tab-group="default"><div class="highlight">
+
+```python
+# 注意：python 代码由 chatGPT🤖 根据我的 java 代码翻译，旨在帮助不同背景的读者理解算法逻辑。
+# 本代码已经通过力扣的测试用例，应该可直接成功提交。
+
+class Solution:
+    def merge(self, nums1: List[int], m: int, nums2: List[int], n: int) -> None:
+        """
+        Do not return anything, modify nums1 in-place instead.
+        """
+        # 两个指针分别初始化在两个数组的最后一个元素（类似拉链两端的锯齿）
+        i, j = m - 1, n - 1
+        # 生成排序的结果（类似拉链的拉锁）
+        p = len(nums1) - 1
+        # 从后向前生成结果数组，类似合并两个有序链表的逻辑
+        while i >= 0 and j >= 0:
+            if nums1[i] > nums2[j]:
+                nums1[p] = nums1[i]
+                i -= 1
+            else:
+                nums1[p] = nums2[j]
+                j -= 1
+            p -= 1
+        # 可能其中一个数组的指针走到尽头了，而另一个还没走完
+        # 因为我们本身就是在往 nums1 中放元素，所以只需考虑 nums2 是否剩元素即可
+        while j >= 0:
+            nums1[p] = nums2[j]
+            j -= 1
+            p -= 1
+```
+
+</div></div>
+
+<div data-tab-item="java" class="tab-item active" data-tab-group="default"><div class="highlight">
+
+```java
+class Solution {
+    public void merge(int[] nums1, int m, int[] nums2, int n) {
+        // 两个指针分别初始化在两个数组的最后一个元素（类似拉链两端的锯齿）
+        int i = m - 1, j = n - 1;
+        // 生成排序的结果（类似拉链的拉锁）
+        int p = nums1.length - 1;
+        // 从后向前生成结果数组，类似合并两个有序链表的逻辑
+        while (i >= 0 && j >= 0) {
+            if (nums1[i] > nums2[j]) {
+                nums1[p] = nums1[i];
+                i--;
+            } else {
+                nums1[p] = nums2[j];
+                j--;
+            }
+            p--;
+        }
+        // 可能其中一个数组的指针走到尽头了，而另一个还没走完
+        // 因为我们本身就是在往 nums1 中放元素，所以只需考虑 nums2 是否剩元素即可
+        while (j >= 0) {
+            nums1[p] = nums2[j];
+            j--;
+            p--;
+        }
+    }
+}
+```
+
+</div></div>
+
+<div data-tab-item="go" class="tab-item " data-tab-group="default"><div class="highlight">
+
+```go
+// 注意：go 代码由 chatGPT🤖 根据我的 java 代码翻译，旨在帮助不同背景的读者理解算法逻辑。
+// 本代码已经通过力扣的测试用例，应该可直接成功提交。
+
+func merge(nums1 []int, m int, nums2 []int, n int)  {
+    i, j, p := m-1, n-1, len(nums1)-1 // 初始化指针
+    for i >= 0 && j >= 0 { // 两个数组都未遍历完时进行比较
+        if nums1[i] > nums2[j] { // 挑选大的元素放入 nums1 的末位
+            nums1[p] = nums1[i]
+            i--
+        } else {
+            nums1[p] = nums2[j]
+            j--
+        }
+        p-- // 从后往前生成结果
+    }
+    for j >= 0 { // nums2 剩余元素放入 nums1
+        nums1[p] = nums2[j]
+        j--
+        p--
+    }
+}
+```
+
+</div></div>
+
+<div data-tab-item="javascript" class="tab-item " data-tab-group="default"><div class="highlight">
+
+```javascript
+// 注意：javascript 代码由 chatGPT🤖 根据我的 java 代码翻译，旨在帮助不同背景的读者理解算法逻辑。
+// 本代码已经通过力扣的测试用例，应该可直接成功提交。
+
+var merge = function(nums1, m, nums2, n) {
+    // 两个指针分别初始化在两个数组的最后一个元素（类似拉链两端的锯齿）
+    var i = m - 1, j = n - 1;
+    // 生成排序的结果（类似拉链的拉锁）
+    var p = nums1.length - 1;
+    // 从后向前生成结果数组，类似合并两个有序链表的逻辑
+    while (i >= 0 && j >= 0) {
+        if (nums1[i] > nums2[j]) {
+            nums1[p] = nums1[i];
+            i--;
+        } else {
+            nums1[p] = nums2[j];
+            j--;
+        }
+        p--;
+    }
+    // 可能其中一个数组的指针走到尽头了，而另一个还没走完
+    // 因为我们本身就是在往 nums1 中放元素，所以只需考虑 nums2 是否剩元素即可
+    while (j >= 0) {
+        nums1[p] = nums2[j];
+        j--;
+        p--;
+    }
+};
+```
+
+</div></div>
+</div></div>
+
+<hr /><details open hint-container details><summary style="font-size: medium"><strong>🌟🌟 算法可视化 🌟🌟</strong></summary><div id="data_merge-sorted-array" data="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"></div><div class="resizable aspect-ratio-container" style="height: 100%;">
+<div id="iframe_merge-sorted-array"></div></div>
+</details><hr /><br />
+
+**类似题目**：
+  - [977. 有序数组的平方 🟢](/problems/squares-of-a-sorted-array)
+
+</details>
+</div>
+
