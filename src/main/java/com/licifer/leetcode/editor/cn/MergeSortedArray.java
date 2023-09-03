@@ -64,6 +64,12 @@
 
 package com.licifer.leetcode.editor.cn;
 
+/**
+ * 解题思路:
+ * 1.对于Nums1数组，从后面开始遍历，大的放在后面
+ * 2.如果nums2还有剩余，那么要把nums2剩余的元素插入到nums1数组的前面来
+ * 3.难点在于插入的时候，要用while循环，然后利用两个指针p,j来取值，每次遍历p,j都减少。如果用for循环，容易出错。
+ */
 public class MergeSortedArray {
     public static void main(String[] args) {
         Solution solution = new MergeSortedArray().new Solution();
@@ -72,6 +78,27 @@ public class MergeSortedArray {
     //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
         public void merge(int[] nums1, int m, int[] nums2, int n) {
+
+            int i = m - 1;
+            int j = n - 1;
+            int p = m + n - 1;
+
+            while (i >= 0 && j >= 0) {
+                if (nums1[i] > nums2[j]) {
+                    nums1[p] = nums1[i];
+                    i--;
+                } else {
+                    nums1[p] = nums2[j];
+                    j--;
+                }
+                p--;
+            }
+
+            while (j >= 0) {
+                nums1[p] = nums2[j];
+                j--;
+                p--;
+            }
 
         }
     }
