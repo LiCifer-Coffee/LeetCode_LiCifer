@@ -1,0 +1,50 @@
+## 解法一：容斥原理 + 二分查找
+
+前置知识： $[1,i]$中能够被a整除的数个数为 $i/a$。 <br>
+**容斥原理：**<br>
+假设班里有10个学生喜欢数学， 15个学生喜欢语文， 21个学生喜欢编程，班里至少喜欢一门学科的有多少个学生呢？是10 + 15 + 21个吗？不是的，因为有些学生可能同时喜欢数学和语文，或者语文和编程，甚至还有可能三者都喜欢.<br>
+我们定义喜欢数学的学生为A集合，喜欢数学的学生为B集合，喜欢编程的为C集合。那么学生总数为$|A \cup B \cup C|$,如果直接将三个集合的个数相加即$|A|+|B|+|C|$会有重复个数，因此需要扣掉一些元素即$|A \cap B|,|A \cap C|,|B \cap C|$,但是这时候我们发现$|A \cap B \cap C|$这部分又会被多扣一次，所以最后再加上这一部分。
+$|A \cup B \cup C| = |A|+|B|+|C| - |A \cap B|-|A \cap C|-|B \cap C| + |A \cap B \cap C|$
+![图片.png](https://pic.leetcode.cn/1670047077-lFQWWI-%E5%9B%BE%E7%89%87.png)
+
+<br> </br>
+
+**本题解法：** <br>
+那么$[1,i]$中能够被a或b或c整除的数个数是否$=i/a + i/b + i/c$？,显然不等于，因为其中有些数即能被a，b和c整除。因此，我们要考虑如何去除重复计算的数。利用容斥原理，$[1,i]$中能被a或b或c整除的数的个数$= i/a - i/b - i/c - i/ab - i/bc - i/ac + i/abc$。其中$i/ab$代表能被a和b整除的数，其他同理。<br><br>
+
+如何利用以上信息计算答案呢?
+题目需要返回第n个丑数，由于n很大，直接暴力求解显然不行。但是其实明白了上面的信息后，很容易就可以想到二分法来求解答案。<br>
+可以将题目转化为：在$[1,i]$中求解能被a或b或c整除的数个数之和大于等于n的最小的$i$即是我们的答案。<br>
+显然对于答案x来说，$[1,x-1]$必然是不满足要求，而$[x,INF]$都能够满足要求。那么就可以使用二分法来寻找这个问题的边界,左边界为1，右边界为无穷大。
+
+- 时间复杂度：$log(n)$
+- 空间复杂度：$O(1)$
+
+* []
+
+```Java
+class Solution {
+    public int nthUglyNumber(int n, int a, int b, int c) { 
+        int l = 1, r = Integer.MAX_VALUE;
+        while (l < r) {
+            int mid = l + (r - l) / 2;
+            if (check(mid, n, a, b, c)) r = mid;
+            else l = mid + 1;
+        }
+        return r;
+    }
+    boolean check(int mid, int n, int a, int b, int c) { 
+        long ab = lcm(a, b), ac = lcm(a, c), bc = lcm(b, c), abc = lcm(lcm(a, b), c);
+        long cnt = (long)mid / a + mid / b + mid / c - mid / ac - mid / bc - mid /ab + mid / abc;
+        return cnt >= n;
+    }
+    long gcd(long a, long b) {return b == 0 ? a : gcd(b, a % b);}
+    long lcm(long a, long b) {return a / gcd(a, b) * b;}
+}
+```
+
+- 相似题目： [第N个神奇数字](https://leetcode.cn/problems/nth-magical-number/solutions/1984462/javac-san-chong-jie-fa-er-fen-cha-zhao-s-32yu/)
+
+--- 
+
+如果有问题,欢迎评论区交流, 如果有帮助到你，请给题解点个赞和收藏哈~~~
