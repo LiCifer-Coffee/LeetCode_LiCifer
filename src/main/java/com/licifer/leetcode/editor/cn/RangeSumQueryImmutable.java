@@ -72,8 +72,6 @@ public class RangeSumQueryImmutable {
             for (int i = 1; i < p.length; i++) {
                 p[i] = p[i - 1] + nums[i - 1];
             }
-
-
         }
 
         public int sumRange(int left, int right) {
