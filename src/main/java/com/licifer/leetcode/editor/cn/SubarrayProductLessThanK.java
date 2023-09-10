@@ -35,9 +35,11 @@
 
 package com.licifer.leetcode.editor.cn;
 
-import java.util.HashMap;
-import java.util.Map;
-
+/**
+ * 题目理解: 找出子数组的积小于k的子数组个数
+ * 解题思路:
+ * 1. 滑动窗口思想，双指针
+ */
 public class SubarrayProductLessThanK {
     public static void main(String[] args) {
         Solution solution = new SubarrayProductLessThanK().new Solution();
@@ -47,24 +49,18 @@ public class SubarrayProductLessThanK {
     class Solution {
         public int numSubarrayProductLessThanK(int[] nums, int k) {
 
-            //Map<Integer, Integer> pMap = new HashMap<>();
-            int[] p = new int[nums.length + 1];
-            //pMap.put(0, 1);
-            int res = 0;
-
-            for (int i = 1; i <= nums.length; i++) {
-                p[i] = p[i - 1] * nums[i - 1];
-
-                for (int j = 0; j <= i; j++) {
-                    if (p[i] * p[j] < 100) {
-                        res++;
-                    }
+            if (k <= 1) return 0;
+            int left = 0, count = 0, product = 1;
+            for (int right = 0; right < nums.length; right++) {
+                product = product * nums[right];
+                while (product >= k) {
+                    product = product / nums[left];
+                    left++;
                 }
-                //pMap.put(p[i], pMap.getOrDefault(p[i], 0) + 1);
+                count = count + (right - left + 1);
             }
-            return res;
 
-
+            return count;
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)
