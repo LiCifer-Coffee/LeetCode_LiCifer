@@ -59,6 +59,10 @@
 
 package com.licifer.leetcode.editor.cn;
 
+/**
+ * 题目理解: 寻找中心数组下标索引，使得左边和等于右边和。nums = [1,7,3,6,5,6] ，输出3，因为[1,7,3]=[5,6]
+ * 解题思路： 前缀和思路，构建前缀和数组，重点是要找出中心点右边的和[5,6]，rightSum = p[p.length - 1] - p[i] - nums[i]，记得要减去当前元素
+ */
 public class Tvdfij {
     public static void main(String[] args) {
         Solution solution = new Tvdfij().new Solution();
