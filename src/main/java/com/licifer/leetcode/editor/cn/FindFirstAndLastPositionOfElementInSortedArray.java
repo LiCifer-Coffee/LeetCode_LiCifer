@@ -43,6 +43,11 @@
 
 package com.licifer.leetcode.editor.cn;
 
+/**
+ * 题目理解: 找数组中目标值的最左和最右索引值
+ * 解题思路:
+ * 1. 标准的二分查找做法，查找最左值和最右值
+ */
 public class FindFirstAndLastPositionOfElementInSortedArray {
     public static void main(String[] args) {
         Solution solution = new FindFirstAndLastPositionOfElementInSortedArray().new Solution();
@@ -53,8 +58,6 @@ public class FindFirstAndLastPositionOfElementInSortedArray {
         public int[] searchRange(int[] nums, int target) {
 
             return new int[]{left(nums, target), right(nums, target)};
-            //return new int[]{left_bound(nums, target), right_bound(nums, target)};
-
         }
 
         int left_bound(int[] nums, int target) {
@@ -101,7 +104,7 @@ public class FindFirstAndLastPositionOfElementInSortedArray {
         }
 
         private int left(int[] nums, int target) {
-            int left = 0, right = nums.length-1;
+            int left = 0, right = nums.length - 1;
 
             while (left <= right) {
                 int mid = left + (right - left) / 2;
@@ -114,7 +117,7 @@ public class FindFirstAndLastPositionOfElementInSortedArray {
                 }
             }
 
-            if (left >= nums.length|| nums[left] != target) {
+            if (left >= nums.length || nums[left] != target) {
                 return -1;
             }
 
@@ -122,7 +125,7 @@ public class FindFirstAndLastPositionOfElementInSortedArray {
         }
 
         private int right(int[] nums, int target) {
-            int left = 0, right = nums.length-1;
+            int left = 0, right = nums.length - 1;
             while (left <= right) {
                 int mid = left + (right - left) / 2;
                 if (nums[mid] == target) {
@@ -134,7 +137,7 @@ public class FindFirstAndLastPositionOfElementInSortedArray {
                 }
             }
 
-            if (right < 0|| nums[right] != target) {
+            if (right < 0 || nums[right] != target) {
                 return -1;
             }
 
