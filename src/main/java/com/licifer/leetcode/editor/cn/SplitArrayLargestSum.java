@@ -53,6 +53,7 @@ package com.licifer.leetcode.editor.cn;
  * 题目理解: 可以理解为，有nums[]个货物，每个货物重nums[i]，求解在指定的天数K内，多少的装载能力能把货物运完，跟运送货物一模一样
  * 解题思路：
  * 1. 子数组和最小就是指的最小装载量是多少，子数组个数就是运送的次数。这题主要就是把题目理解成“运送货物”
+ * 2. 子数组个数相同时(m=2)，相加的和(x)可能不同，及时一个单调递减函数，有一块是平的。
  */
 public class SplitArrayLargestSum {
     public static void main(String[] args) {
