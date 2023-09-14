@@ -45,6 +45,13 @@
 
 package com.licifer.leetcode.editor.cn;
 
+/**
+ * 题目理解: 给定一个target，判断是否存在matrix二维数组中
+ * 解题思路：
+ * 1. 将二维数组转化为一维数组
+ * 2. 利用一维数组中的index求出二维数组的坐标
+ * 3. 注意 int i = x / col; 而不是 int i = x / row;
+ */
 public class SearchA2dMatrix {
     public static void main(String[] args) {
         Solution solution = new SearchA2dMatrix().new Solution();
