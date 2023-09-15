@@ -55,6 +55,7 @@ import java.util.List;
  * 1. 二分法找出x所在的位置，然后利用中间双指针从x的左右两边移动，注意判断指针索引值
  * 2. 注意 Math.abs(arr[p1] - x) <= Math.abs(arr[p2] - x) ，当相等时，取最小那一个
  * 3. 注意 P2=index，因为返回的数组中要包含x
+ * 4. 由于结果要是排序好的，所以使用链表数组，利用addFirst和addLast排序
  */
 public class FindKClosestElements {
     public static void main(String[] args) {
