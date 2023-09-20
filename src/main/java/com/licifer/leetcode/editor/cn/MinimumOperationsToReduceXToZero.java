@@ -49,11 +49,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * LeetCode: https://leetcode.cn/problems/minimum-operations-to-reduce-x-to-zero/description/
  * 题目理解: 可以将题目转化为寻找数组中和=x的最小元素个数，由于可能是不连续的数组元素相加，所以一个前缀和解决不了问题
  * 解题思路:
  * 1. 构建左前缀和  和  右前缀和，如果左，右两个前缀和中有一个等于x了，那么取当中最小的那一个数，如果没有，那么用左前缀和下标 + 右前缀的下标相加
  * 2. 取三种情况的最小值
  * 3. 这个题目思路很简单，但是代码量比较多，细节比较多，由于是取最小值，所以int res = Integer.MAX_VALUE; 不能定义成res=-1;
+ * 4. 利用滑动窗口思路解题，可以把题目理解为求窗口里面的最大值，窗口大小为total-x，由于是求最小操作数，所以nums.length-(right-left)（子数组长度）就可以求得操作次数
  */
 public class MinimumOperationsToReduceXToZero {
     public static void main(String[] args) {
@@ -64,40 +66,65 @@ public class MinimumOperationsToReduceXToZero {
     class Solution {
         public int minOperations(int[] nums, int x) {
 
-            int[] leftSum = new int[nums.length + 1];
-            int[] rightSum = new int[nums.length + 1];
-            Map<Integer, Integer> rightMap = new HashMap<>();
-            int res = Integer.MAX_VALUE;
-
-            for (int i = 1; i <= nums.length; i++) {
-                leftSum[i] = leftSum[i - 1] + nums[i - 1];
-                if (leftSum[i] == x) {
-                    res = Math.min(i, res);
-                }
-                if (leftSum[i] >= x) {
-                    break;
-                }
+            // 使用滑动窗口解题
+            int left = 0, right = 0, windowSum = 0;
+            int len = Integer.MIN_VALUE, total = 0;
+            for (int num : nums) {
+                total += num;
+            }
+            if (x > total) {
+                return -1;
             }
 
-            for (int i = nums.length; i >= 1; i--) {
-                rightSum[rightSum.length - i] = rightSum[rightSum.length - i - 1] + nums[i - 1];
-                if (rightSum[rightSum.length - i] == x) {
-                    res = Math.min(res, rightSum.length - i);
+            while (right < nums.length) {
+                windowSum += nums[right];
+                right++;
+                while (windowSum > total - x) {
+                    windowSum = windowSum - nums[left];
+                    left++;
                 }
-                if (rightSum[rightSum.length - i] < x) {
-                    rightMap.putIfAbsent(rightSum[rightSum.length - i], rightSum.length - i);
-                }
-            }
-
-            for (int i = 1; i < leftSum.length; i++) {
-                if (rightMap.containsKey(x - leftSum[i])) {
-                    if (i + rightMap.get(x - leftSum[i]) < nums.length) {
-                        res = Math.min(i + rightMap.get(x - leftSum[i]), res);
-                    }
+                if (windowSum == total - x) {
+                    len = Math.max(len, right - left);
                 }
             }
+            return len == Integer.MIN_VALUE ? -1 : nums.length - len;
 
-            return res == Integer.MAX_VALUE ? -1 : res;
+
+
+            //int[] leftSum = new int[nums.length + 1];
+            //int[] rightSum = new int[nums.length + 1];
+            //Map<Integer, Integer> rightMap = new HashMap<>();
+            //int res = Integer.MAX_VALUE;
+            //
+            //for (int i = 1; i <= nums.length; i++) {
+            //    leftSum[i] = leftSum[i - 1] + nums[i - 1];
+            //    if (leftSum[i] == x) {
+            //        res = Math.min(i, res);
+            //    }
+            //    if (leftSum[i] >= x) {
+            //        break;
+            //    }
+            //}
+            //
+            //for (int i = nums.length; i >= 1; i--) {
+            //    rightSum[rightSum.length - i] = rightSum[rightSum.length - i - 1] + nums[i - 1];
+            //    if (rightSum[rightSum.length - i] == x) {
+            //        res = Math.min(res, rightSum.length - i);
+            //    }
+            //    if (rightSum[rightSum.length - i] < x) {
+            //        rightMap.putIfAbsent(rightSum[rightSum.length - i], rightSum.length - i);
+            //    }
+            //}
+            //
+            //for (int i = 1; i < leftSum.length; i++) {
+            //    if (rightMap.containsKey(x - leftSum[i])) {
+            //        if (i + rightMap.get(x - leftSum[i]) < nums.length) {
+            //            res = Math.min(i + rightMap.get(x - leftSum[i]), res);
+            //        }
+            //    }
+            //}
+            //
+            //return res == Integer.MAX_VALUE ? -1 : res;
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)
