@@ -35,10 +35,14 @@
 
 package com.licifer.leetcode.editor.cn;
 
-/**
+/*
+ * LeetCode: https://leetcode.cn/problems/subarray-product-less-than-k/description/
  * 题目理解: 找出子数组的积小于k的子数组个数
  * 解题思路:
  * 1. 滑动窗口思想，双指针
+ * 2. 利用滑动窗口解题思路，要注意窗口缩小时left<right的判断，如果不加这个判断，当输入为[1,1,1]时会有问题
+ * 3. 对于结果集count = count + right - left; 例如此时left=1,right=4,结果数组[1,2,3]，此时满足条件的子数组为:[3],[2,3],[1,2,3]，没有[1,2]这个数组，这个数组在right=3,[1,2]时已经处理了
+ * 4. 对于滑动窗口，比较难以确定两点是窗口缩小时机和什么时候得到一个合法的答案
  */
 public class SubarrayProductLessThanK {
     public static void main(String[] args) {
@@ -49,18 +53,37 @@ public class SubarrayProductLessThanK {
     class Solution {
         public int numSubarrayProductLessThanK(int[] nums, int k) {
 
-            if (k <= 1) return 0;
-            int left = 0, count = 0, product = 1;
-            for (int right = 0; right < nums.length; right++) {
-                product = product * nums[right];
-                while (product >= k) {
-                    product = product / nums[left];
+            // 滑动窗口
+            if (k == 0) {
+                return 0;
+            }
+            int left = 0, right = 0, count = 0, windowProduct = 1;
+            while (right < nums.length) {
+                windowProduct = windowProduct * nums[right];
+                right++;
+                while (left < right && windowProduct >= k) {
+                    windowProduct = windowProduct / nums[left];
                     left++;
                 }
-                count = count + (right - left + 1);
+                count = count + right - left;
             }
-
             return count;
+
+
+
+            // 前缀积思想
+            //if (k <= 1) return 0;
+            //int left = 0, count = 0, product = 1;
+            //for (int right = 0; right < nums.length; right++) {
+            //    product = product * nums[right];
+            //    while (product >= k) {
+            //        product = product / nums[left];
+            //        left++;
+            //    }
+            //    count = count + (right - left + 1);
+            //}
+            //
+            //return count;
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)
