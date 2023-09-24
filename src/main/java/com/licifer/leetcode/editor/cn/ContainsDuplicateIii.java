@@ -75,6 +75,8 @@ public class ContainsDuplicateIii {
             TreeSet<Integer> windowSet = new TreeSet<>();
 
             while (right < nums.length) {
+                // 先做逻辑判断，再right++，所以当right=nums.length时，索引不会越界。
+                // 这里的判断都是对窗口内符合条件的元素进行判断
                 if (windowSet.ceiling(nums[right]) != null && windowSet.ceiling(nums[right]) - nums[right] <= valueDiff) {
                     return true;
                 }
