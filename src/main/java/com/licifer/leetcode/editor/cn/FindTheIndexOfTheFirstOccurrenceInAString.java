@@ -41,7 +41,7 @@ package com.licifer.leetcode.editor.cn;
  * LeetCode: https://leetcode.cn/problems/find-the-index-of-the-first-occurrence-in-a-string/description/
  * 题目理解: 求txt中的 pat字符串的起始位置，如果txt中不存在pat字符串，那么返回-1
  * 解题思路:
- * 1. 滑动哈希窗口解题思路，还是把字符串转化为数字hash的方法，只不过要不断求余（%Q）
+ * 1. 滑动哈希窗口解题思路，还是把字符串转化为数字hash的方法，只不过要不断求余（%Q），重点是掌握滑动哈希窗口这种套路
  * 2. X % Q == (X + Q) % Q
  *    (X + Y) % Q == (X % Q + Y % Q) % Q
  */
