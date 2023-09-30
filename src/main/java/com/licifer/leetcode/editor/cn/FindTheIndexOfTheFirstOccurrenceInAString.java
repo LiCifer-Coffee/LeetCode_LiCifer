@@ -44,6 +44,7 @@ package com.licifer.leetcode.editor.cn;
  * 1. 滑动哈希窗口解题思路，还是把字符串转化为数字hash的方法，只不过要不断求余（%Q），重点是掌握滑动哈希窗口这种套路
  * 2. X % Q == (X + Q) % Q
  *    (X + Y) % Q == (X % Q + Y % Q) % Q
+ * 3. 一般将比较大的数字转化为比较小的数字都会采用求余这种方法，求余后的范围为[0,N-1]
  */
 public class FindTheIndexOfTheFirstOccurrenceInAString {
     public static void main(String[] args) {
