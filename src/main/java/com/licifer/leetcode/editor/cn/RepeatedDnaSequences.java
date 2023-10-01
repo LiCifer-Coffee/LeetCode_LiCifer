@@ -55,7 +55,7 @@ import java.util.List;
  * 1. 利用滑动哈希窗口思想，将10位字符串转化为数字hash
  * 2. 窗口增大时，向右边加一位，82643 = 8264*10 + 3(rightNum)，此时只需要知道新加入的低位，windowHash=8264
  * 3. 窗口缩小时，向左边减一位，264 = 8264 - 8(leftNum)*10^(4-1)，10位进制数，4为窗口字符串长度，windowHash=8264
- * 4. 滑动窗口哈希，主要是需要弄懂上面那个算法。
+ * 4. 滑动窗口哈希，主要是需要弄懂上面那个算法，如何增加或者减少一位。
  */
 public class RepeatedDnaSequences {
     public static void main(String[] args) {
