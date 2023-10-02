@@ -45,7 +45,7 @@ import java.util.HashSet;
 
 /**
  * LeetCode: https://leetcode.cn/problems/contains-duplicate-ii/description/
- * 题目理解: 找出一个子数组，其中数组的首位元素值相等，并且索引的差值<=k
+ * 题目理解: 找出一个子数组，其中数组的第一个元素值和数组的最后一个元素值相等，并且索引的差值<=k
  * 解题思路:
  * 1. 滑动窗口思想，维护一个HashSet，目的是存放窗口中的元素，如果新加入的元素已经存在窗口中，那么返回true
  * 2. 要定义一个HashSet，不能单纯的用nums[right]=nums[left]来判断，这点是关键
